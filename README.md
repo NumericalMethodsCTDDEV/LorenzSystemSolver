@@ -9,12 +9,12 @@ Run from the root of project
 
 mkdir build  
 cd build  
-cmake -DUSE_QT=OFF ../src/  
+cmake -DUSE_QT=OFF ..  
 make  
 
 ```
 
-Change 3rd line to `cmake ../src/ ` to use qt libraries
+Change 3rd line to `cmake .. ` to use qt libraries
 
 
 ## How to run:
