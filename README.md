@@ -2,6 +2,8 @@
 
 ## How to build:
 
+Build and install gnuplot (dowload here https://sourceforge.net/projects/gnuplot/files/gnuplot/)
+
 Run from the root of project
 
 
@@ -21,4 +23,7 @@ Change 3rd line to `cmake .. ` to use qt libraries
 
 Run from build folder:
 
-`./LorenzSystemSolver`
+```bash
+cd bin  
+./LorenzSystemSolver  
+```
