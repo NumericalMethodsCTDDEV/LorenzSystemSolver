@@ -41,7 +41,7 @@ int buildChartGnuPlot(const Answer &ans)
     fprintf(gp, "set key inside left top vertical Right noreverse enhanced autotitles box linetype "
                 "-1 linewidth 1.000\n");
     fprintf(gp, "set samples 100, 100\n");
-    fprintf(gp, "splot \".logs.txt\" using 1:2:3 with lines");
+    fprintf(gp, "splot \".log.txt\" using 1:2:3 with lines");
     pclose(gp);
     return 0;
 }
