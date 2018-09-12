@@ -41,6 +41,7 @@
 #include <QtDataVisualization/qscatterdataproxy.h>
 #include <QtDataVisualization/qvalue3daxis.h>
 #include <QtWidgets/QComboBox>
+#include "../frontend.h"
 
 using namespace QtDataVisualization;
 
@@ -302,6 +303,7 @@ void ScatterDataModifier::replot()
     }
 
     addData(ans);
+    buildChartGnuPlot();
 }
 
 QVector3D ScatterDataModifier::randVector()

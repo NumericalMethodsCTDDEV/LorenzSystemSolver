@@ -2,6 +2,7 @@
 #include "answer.h"
 #include "config.h"
 #include <boost/numeric/odeint.hpp>
+#include <fstream>
 
 using namespace boost::numeric::odeint;
 
@@ -18,14 +19,17 @@ Answer solve_with_stepper(Stepper stepper, const ConfigSingleton *configs)
     std::vector<double> xs;
     std::vector<double> ys;
     std::vector<double> zs;
-    auto observer = [&ts, &xs, &ys, &zs](const state_type &x, const double t) {
+    std::ofstream fout(".logs.txt");
+    auto observer = [&fout, &ts, &xs, &ys, &zs](const state_type &x, const double t) {
         ts.push_back(t);
         xs.push_back(x[0]);
         ys.push_back(x[1]);
         zs.push_back(x[2]);
+        fout << x[0] << " " << x[1] << " " << x[2] << std::endl;
     };
     state_type x = {{configs->x0, configs->y0, configs->z0}}; // initial conditions
     integrate_const(stepper, lorenz, x, 0., configs->t_max, configs->dt, observer);
+    fout.close();
     return Answer(std::move(ts), std::move(xs), std::move(ys), std::move(zs));
 }
 
