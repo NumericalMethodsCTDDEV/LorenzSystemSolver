@@ -70,7 +70,7 @@ int showUi(int argc, char **argv)
 
     Answer ans = solve();
     printAns(ans);
-    buildChartGnuPlot();
+    buildChartGnuPlot(ans);
 
     return 0;
 }

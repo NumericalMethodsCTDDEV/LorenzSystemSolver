@@ -59,6 +59,11 @@ public:
         checkVector(x);
         checkVector(y);
         checkVector(z);
+        return static_cast<const Answer *>(this)->solvedCorrect();
+    }
+
+    bool solvedCorrect() const
+    {
         return (!static_cast<bool>(error_msg.size()));
     }
 

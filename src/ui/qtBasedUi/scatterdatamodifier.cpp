@@ -303,7 +303,7 @@ void ScatterDataModifier::replot()
     }
 
     addData(ans);
-    buildChartGnuPlot();
+    buildChartGnuPlot(ans);
 }
 
 QVector3D ScatterDataModifier::randVector()
