@@ -187,7 +187,7 @@ int showUi(int argc, char **argv)
     {
         QPalette pal = replotButton->palette();
         pal.setColor(QPalette::Button, QColor(Qt::green));
-        replotButton->setText(QStringLiteral("Intergate"));
+        replotButton->setText(QStringLiteral("Integrate"));
         replotButton->setAutoFillBackground(true);
         replotButton->setPalette(pal);
 
