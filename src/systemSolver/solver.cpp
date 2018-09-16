@@ -1,7 +1,7 @@
 #include "solver.h"
 #include "config.h"
 #include "internal_method_names.h"
-#include "methodsImplementation/declaretions.h"
+#include "methodsImplementation/declarations.h"
 #include <unordered_map>
 
 using SolverMethodPtr = Answer (*)(const ConfigSingleton *);

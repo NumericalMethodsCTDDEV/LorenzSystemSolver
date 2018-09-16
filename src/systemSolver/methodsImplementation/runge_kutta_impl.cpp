@@ -1,4 +1,4 @@
-#include "declaretions.h"
+#include "declarations.h"
 #include "shared.h"
 #include <boost/numeric/odeint.hpp>
 

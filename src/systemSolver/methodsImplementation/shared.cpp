@@ -29,7 +29,19 @@ Answer solve_with_stepper(Stepper stepper, const ConfigSingleton *configs)
     return Answer(std::move(ts), std::move(xs), std::move(ys), std::move(zs));
 }
 
-template Answer solve_with_stepper<euler<state_type>>(euler<state_type>, const ConfigSingleton *);
+double dxdt(double x, double y, const ConfigSingleton *config) {
+    return ((y - x) * config -> sigma);
+}
+
+double dydt(double x, double y, double z, const ConfigSingleton *config) {
+    return (x * (config -> r - z) - y);
+}
+
+double dzdt(double x, double y, double z, const ConfigSingleton *config) {
+    return (x * y - z * config -> b);
+}
+
+// template Answer solve_with_stepper<euler<state_type>>(euler<state_type>, const ConfigSingleton *);
 template Answer solve_with_stepper<runge_kutta4<state_type>>(runge_kutta4<state_type>,
                                                              const ConfigSingleton *);
 template Answer solve_with_stepper<adams_bashforth_moulton<1, state_type>>(

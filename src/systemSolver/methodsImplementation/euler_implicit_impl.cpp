@@ -1,7 +1,31 @@
-#include "declaretions.h"
+#include "declarations.h"
+#include "shared.h"
+#include <vector>
 
-Answer euler_implicit(const ConfigSingleton *)
+using namespace std;
+
+Answer euler_implicit(const ConfigSingleton *config)
 {
-    std::string error_msg = "Not implemented yet!";
-    return Answer(error_msg);
+    size_t sz = (config -> t_max - config -> t0) / config -> dt;
+    vector <double> t(sz);
+    vector <double> x(sz);
+    vector <double> y(sz);
+    vector <double> z(sz);
+    t[0] = config -> t0;
+    x[0] = config -> x0;
+    y[0] = config -> y0;
+    z[0] = config -> z0;
+    for (size_t i = 1; i < sz; ++i) {
+        // predict
+        t[i] = t[i - 1] + config -> dt;
+        x[i] = x[i - 1] + dxdt(x[i - 1], y[i - 1], config) * config -> dt;
+        y[i] = y[i - 1] + dydt(x[i - 1], y[i - 1], z[i - 1], config) * config -> dt;
+        z[i] = z[i - 1] + dzdt(x[i - 1], y[i - 1], z[i - 1], config) * config -> dt;
+
+        // correct
+        x[i] = x[i - 1] + (dxdt(x[i - 1], y[i - 1], config) + dxdt(x[i], y[i], config)) / 2 * config -> dt;
+        y[i] = y[i - 1] + (dydt(x[i - 1], y[i - 1], z[i - 1], config) + dydt(x[i], y[i], z[i], config)) / 2 * config -> dt;
+        z[i] = z[i - 1] + (dzdt(x[i - 1], y[i - 1], z[i - 1], config) + dzdt(x[i], y[i], z[i], config)) / 2 * config -> dt;
+    }
+    return Answer(std::move(t), std::move(x), std::move(y), std::move(z));
 }
