@@ -15,14 +15,14 @@ int buildChartGnuPlot(const Answer &ans)
     std::ofstream fout(".log.txt");
     if (!ans.solvedCorrect())
     {
-        fprintf(stderr, "%s", ans.error_msg.c_str());
+        fprintf(stderr, "gnuplot: %s\n", ans.error_msg.c_str());
         return 0;
     }
 
     for (size_t i = 0; i != ans.x.size(); ++i)
     {
         if (!(check(ans.x[i]) && check(ans.y[i]) && check(ans.z[i]))) {
-            fprintf(stderr, "nan of inf in line %d", i);
+            fprintf(stderr, "gnuplot: nan or inf in line %d\n", i);
             return 0;
         }
         fout << ans.x[i] << " " << ans.y[i] << " " << ans.z[i] << std::endl;
@@ -32,7 +32,7 @@ int buildChartGnuPlot(const Answer &ans)
 
     if (gp == NULL)
     {
-        printf("Error opening pipe to GNU plot.\n");
+        fprintf(stderr, "gnuplot: Error opening pipe to GNU plot.\n");
         return 1;
     }
     fprintf(gp, "set terminal png\n");
