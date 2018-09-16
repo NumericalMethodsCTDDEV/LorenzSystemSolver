@@ -119,7 +119,7 @@ int showUi(int argc, char **argv)
     hLayout->addLayout(vLayout);
     //! [1]
 
-    QGroupBox *configGroupBox = new QGroupBox(QStringLiteral("Lorenz equetion configs"));
+    QGroupBox *configGroupBox = new QGroupBox(QStringLiteral("Lorenz equation configs"));
     QVBoxLayout *configGroupBoxLayout = new QVBoxLayout;
     std::vector<QComboBox *> lineEdits(8, nullptr);
 
