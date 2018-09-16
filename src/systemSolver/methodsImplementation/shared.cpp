@@ -29,16 +29,10 @@ Answer solve_with_stepper(Stepper stepper, const ConfigSingleton *configs)
     return Answer(std::move(ts), std::move(xs), std::move(ys), std::move(zs));
 }
 
-double dxdt(double x, double y, const ConfigSingleton *config) {
-    return ((y - x) * config -> sigma);
-}
-
-double dydt(double x, double y, double z, const ConfigSingleton *config) {
-    return (x * (config -> r - z) - y);
-}
-
-double dzdt(double x, double y, double z, const ConfigSingleton *config) {
-    return (x * y - z * config -> b);
+void dfdt(double x, double y, double z, const ConfigSingleton *config, double ans[]) {
+    ans[0] = ((y - x) * config -> sigma);
+    ans[1] = (x * (config -> r - z) - y);
+    ans[2] = (x * y - z * config -> b);
 }
 
 // template Answer solve_with_stepper<euler<state_type>>(euler<state_type>, const ConfigSingleton *);

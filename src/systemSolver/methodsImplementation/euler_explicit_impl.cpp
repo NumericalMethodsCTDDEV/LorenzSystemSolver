@@ -15,11 +15,14 @@ Answer euler_explicit(const ConfigSingleton *config)
     x[0] = config -> x0;
     y[0] = config -> y0;
     z[0] = config -> z0;
+    double res[3];
     for (size_t i = 1; i < sz; ++i) {
         t[i] = t[i - 1] + config -> dt;
-        x[i] = x[i - 1] + dxdt(x[i - 1], y[i - 1], config) * config -> dt;
-        y[i] = y[i - 1] + dydt(x[i - 1], y[i - 1], z[i - 1], config) * config -> dt;
-        z[i] = z[i - 1] + dzdt(x[i - 1], y[i - 1], z[i - 1], config) * config -> dt;
+
+        dfdt(x[i - 1], y[i - 1], z[i - 1], config, res);
+        x[i] = x[i - 1] + res[0] * config -> dt;
+        y[i] = y[i - 1] + res[1] * config -> dt;
+        z[i] = z[i - 1] + res[2] * config -> dt;
     }
     return Answer(std::move(t), std::move(x), std::move(y), std::move(z));
 }
