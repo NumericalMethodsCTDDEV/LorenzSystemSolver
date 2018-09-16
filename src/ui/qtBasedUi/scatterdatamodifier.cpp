@@ -28,6 +28,7 @@
 ****************************************************************************/
 
 #include "scatterdatamodifier.h"
+#include "../frontend.h"
 #include "config.h"
 #include "internal_method_names.h"
 #include "show_method_names.h"
@@ -41,7 +42,6 @@
 #include <QtDataVisualization/qscatterdataproxy.h>
 #include <QtDataVisualization/qvalue3daxis.h>
 #include <QtWidgets/QComboBox>
-#include "../frontend.h"
 
 using namespace QtDataVisualization;
 
@@ -85,17 +85,35 @@ ScatterDataModifier::ScatterDataModifier(Q3DScatter *scatter, const std::vector<
 
 ScatterDataModifier::~ScatterDataModifier() { delete m_graph; }
 
-static inline void rebuildChartWithNewData(
-    QChart *chart, const std::vector<double> &x, const std::vector<double> &y)
+template <typename T>
+static inline std::pair<T, T> _find_min_max(const std::vector<T> &v)
+{
+    T mi = std::numeric_limits<T>::max();
+    T ma = std::numeric_limits<T>::min();
+    for (const auto &x : v)
+    {
+        if (x > ma)
+            ma = x;
+        if (x < mi)
+            mi = x;
+    }
+    return {mi, ma};
+}
+
+static inline void rebuildChartWithNewData(QChart *chart, const std::vector<double> &x,
+                                           const std::vector<double> &y)
 {
     chart->removeAllSeries();
-    chart->axisX()->setRange(*std::min_element(x.begin(), x.end()), *std::max_element(x.begin(), x.end()));
-    chart->axisY()->setRange(*std::min_element(y.begin(), y.end()), *std::max_element(y.begin(), y.end()));
+    std::pair<double, double> min_max_x = _find_min_max(x);
+    std::pair<double, double> min_max_y = _find_min_max(y);
+    chart->axisX()->setRange(min_max_x.first, min_max_x.second);
+    chart->axisY()->setRange(min_max_y.first, min_max_y.second);
     QSplineSeries *series = new QSplineSeries();
 
     size_t minSz = std::min(x.size(), y.size());
 
-    for (size_t i = 0; i != minSz; ++i) {
+    for (size_t i = 0; i != minSz; ++i)
+    {
         series->append(x[i], y[i]);
     }
 
@@ -295,7 +313,7 @@ void ScatterDataModifier::replot()
     }
     loadLorenzConfig();
     Answer ans = solve();
-//    ans.trimNansAndInfs();
+    //    ans.trimNansAndInfs();
     if (!ans.solvedCorrect())
     {
         showMessage(QString::fromUtf8(ans.error_msg.c_str()));
